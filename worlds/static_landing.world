@@ -14,5 +14,10 @@
       <uri>model://ground_plane</uri>
     </include>
 
+    <include>
+      <uri>model://iros2016_track</uri>
+    </include>
+
+
   </world>
 </sdf>
