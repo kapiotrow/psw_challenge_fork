@@ -26,10 +26,10 @@ class Control(object):
         pub_msg = Twist()
         pub_msg.linear.z = -self.Kp * dy
         pub_msg.linear.y = 0
-        pub_msg.linear.x = 2.0
+        pub_msg.linear.x = 1.5
         pub_msg.angular.x = 0
         pub_msg.angular.y = 0
-        pub_msg.angular.z = -0.005 * dx
+        pub_msg.angular.z = -0.01 * dx
         self.vel_pub.publish(pub_msg)
 
 

@@ -12,9 +12,9 @@ OBSTACLES = [ "https://fuel.gazebosim.org/1.0/OpenRobotics/models/Pine Tree",
               "https://fuel.gazebosim.org/1.0/OpenRobotics/models/Telephone pole", 
               "Wooden Peg"]
 MY_OBSTACLES = OBSTACLES[:3]  # Selecting obstacles
-NO_OBSTACLES = 5  # export GZ_SIM_RESOURCE_PATH=~/PX4-Autopilot/Tools/simulation/gz/models:~/PX4-Autopilot/Tools/simulation/gz/worlds
-OBSTACLES_AREA = ((12, 70), (-6, 6))
-MIN_OBSTACLES_DISTANCE = 7
+NO_OBSTACLES = 17  # export GZ_SIM_RESOURCE_PATH=~/PX4-Autopilot/Tools/simulation/gz/models:~/PX4-Autopilot/Tools/simulation/gz/worlds
+OBSTACLES_AREA = ((30, 80), (-25, 35))
+MIN_OBSTACLES_DISTANCE = 10
 
 
 def obst_sdf_code(obstacle: str, pose: Tuple[float], rotation: float, name: str) -> str:

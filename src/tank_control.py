@@ -16,6 +16,7 @@ class Tank(object):
         pub_msg.linear.z = 0
         pub_msg.linear.y = 0
         pub_msg.linear.x = 0.3
+        pub_msg.angular.z = 0.01
         self.vel_pub.publish(pub_msg)
 
 
