@@ -18,28 +18,46 @@ class Control(object):
         self.vel_pub = rospy.Publisher(self.vel_pub_topic, Twist, queue_size=10)
         self.pos_pub = rospy.Publisher(self.pos_pub_topic, PoseStamped, queue_size=10)
         self.rate = rospy.Rate(20)
+        self.target_lost = False
         
 
     def velocity_cb(self, msg):
-        dx = msg.data[0] - 50
-        dy = msg.data[1] - 50
-        pub_msg = Twist()
-        pub_msg.linear.z = -self.Kp * dy
-        pub_msg.linear.y = 0
-        pub_msg.linear.x = 1.5
-        pub_msg.angular.x = 0
-        pub_msg.angular.y = 0
-        pub_msg.angular.z = -0.01 * dx
-        self.vel_pub.publish(pub_msg)
+        if not self.target_lost:
+            dx = msg.data[0] - 50
+            dy = msg.data[1] - 50
+            pub_msg = Twist()
+            pub_msg.linear.z = -self.Kp * dy
+            pub_msg.linear.y = 0
+            pub_msg.linear.x = 1.5
+            pub_msg.angular.x = 0
+            pub_msg.angular.y = 0
+            pub_msg.angular.z = -0.01 * dx
+            self.vel_pub.publish(pub_msg)
 
 
     def start_challenge_cb(self, msg):
         if msg.data:
             self.challenge_started = True
 
+    def target_lost_cb(self, msg):
+        self.target_lost = msg.data
+
+        if self.target_lost:
+            print("target lost!")
+            # -- stop the drone
+            vel_msg = Twist()
+            vel_msg.linear.x = 0
+            vel_msg.linear.y = 0
+            vel_msg.linear.z = 0
+            vel_msg.angular.x = 0
+            vel_msg.angular.y = 0
+            vel_msg.angular.z = 0
+            self.vel_pub.publish(vel_msg)
+
 
     def drone_control(self):
         rospy.Subscriber("/iris_control/challenge_start", Bool, self.start_challenge_cb)
+        rospy.Subscriber("/iris_control/target_lost", Bool, self.target_lost_cb)
         while(not self.challenge_started):
             self.rate.sleep()
         rospy.Subscriber("/iris_control/mosse_output", Int32MultiArray, self.velocity_cb)
